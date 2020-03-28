@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -28,42 +29,49 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-
+  int score=0;
   List<Icon> scorekeeper = [];            //.IndexOf() is a function to find index of anything in the list
 
   void checkAns(bool userPickedAnswer){
     bool correct = quizBrain.getQuestionAns();
 
     setState(() {
-    if (userPickedAnswer == correct){
-      print('user is right');
-      scorekeeper.add(Icon(
-        Icons.check,
-        color: Colors.green,
-      ));
-    }else{
-      print('user is wrong');
-      scorekeeper.add(Icon(
-        Icons.close,
-        color: Colors.red,
-      ));
-    }
-      quizBrain.nextQues();
+      if (quizBrain.isFinished() == true) {
+        //TODO Step 4 Part A - show an alert using rFlutter_alert,
+
+        //Modified for our purposes:
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You Scored $score. Press Cancel to End and Restart the QUIZ ?',
+        ).show();
+
+        //TODO Step 4 Part C - reset the questionNumber,
+        quizBrain.reset();
+
+        //TODO Step 4 Part D - empty out the scoreKeeper.
+        scorekeeper = [];
+        score=0;
+      }
+
+      //TODO: Step 6 - If we've not reached the end, ELSE do the answer checking steps below 👇
+      else {
+        if (userPickedAnswer == correct) {
+          score++;
+          scorekeeper.add(Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          scorekeeper.add(Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+        quizBrain.nextQues();
+      }
     });
   }
-
-  //List<String> questions = [
-  //  'You can lead a cow down stairs but not up stairs.',
-  //  'Approximately one quarter of human bones are in the feet.',
-  //  'A slug\'s blood is green.'
-  //];
-
-  //List<bool> answers =[
-  //  false,
-  //  true,
-  //  true
-  //];
-
 
   //Question q1 = Question(q: 'You can lead a cow down stairs but not up stairs.', a: false);
 
@@ -136,9 +144,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
