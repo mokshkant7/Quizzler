@@ -1,6 +1,3 @@
-![App Brewery Banner](https://github.com/londonappbrewery/Images/blob/master/AppBreweryBanner.png)
-
-
 # Quizzler ❓
 This is a Flutter Project.
 For running this you need to have Setup, The Android studio along with the Flutter SDK.
